@@ -9,18 +9,19 @@ const winston = require('winston');
 
 const router = require('./src/routes/index')
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+
+require('././startup/config')(app,express);
+
+require('././startup/db')();
+require('././startup/logging')();
 
 
-mongoose.connect(config.get('db.address'))
-    .then(() => debug('connected to mongodb:authproject'))
-    .catch(() => debug('could not connect to mongodb'));
 
 
-winston.add(new winston.transports.File({filename: 'logfile.log'}));
+// const p = promise.reject(new Error('somting failed outside promise'));
+// p.then(()=>console.log('done'));
 
+// throw new Error('somting failed outside');
 
 app.use('/api', router);
 
